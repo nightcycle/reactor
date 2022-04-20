@@ -14,6 +14,10 @@ local Constructors = {
 	state = fusion.State,
 }
 
+for i, mod in ipairs(script:GetChildren()) do
+	Constructors[string.lower(mod.Name)] = mod
+end
+
 local Handler = {}
 
 function Handler.get(componentName: string)

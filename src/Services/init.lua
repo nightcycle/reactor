@@ -3,7 +3,7 @@ local reactor = script.Parent
 local packages = reactor.Parent
 
 local Services = {}
-for i, module in ipairs(packages:GetChildren()) do
+for i, module in ipairs(script:GetChildren()) do
 	module.Name = string.lower(module.Name)
 	Services[module.Name] = module
 end

@@ -1,8 +1,8 @@
 [package]
-name = "nightcycle/package"
-description = "A package!"
-version = "4.0.0"
-authors = ["CJ Oyer <coyer@nightcycle.us>"]
+name = "nightcycle/reactor"
+description = "A light fusion powered engine / framework for Nightcycle projects."
+version = "0.1.0"
+authors = ["Nightcycle <coyer@nightcycle.us>"]
 realm = "shared"
 registry = "https://github.com/upliftgames/wally-index"
 exclude = ["Packages", ".vscode"]

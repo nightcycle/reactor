@@ -1,6 +1,6 @@
 [package]
 name = "nightcycle/reactor"
-description = "A light fusion powered engine / framework for Nightcycle projects."
+description = "A light fusion powered engine / framework for Nightcycle projects. Think of it as a 'game' instance wrapper."
 version = "0.1.0"
 authors = ["Nightcycle <coyer@nightcycle.us>"]
 realm = "shared"
@@ -8,10 +8,26 @@ registry = "https://github.com/upliftgames/wally-index"
 exclude = ["Packages", ".vscode"]
 
 [dependencies]
+# constructors
+isotope = "nightcycle/isotope@1.0.0"
+checkbox = "nightcycle/checkbox@0.1.0"
+iconlabel = "nightcycle/iconlabel@0.1.0"
+player = "nightcycle/player@0.1.0"
+radiobutton = "nightcycle/radio-button@0.1.0"
+switch = "nightcycle/switch@0.1.0"
+textlabel = "nightcycle/textlabel@0.1.0"
+# services
+draw = "nightcycle/draw@1.0.0"
+enum = "nightcycle/enum@0.1.0"
+fire = "nightcycle/fire@0.1.0"
+format = "nightcycle/format@0.1.0"
+string = "nightcycle/string@0.1.0"
+texture = "nightcycle/texture@0.1.0"
+query = "nightcycle/query@0.1.1"
+timesync = "nightcycle/timesync@0.1.0"
+voxel = "nightcycle/voxel@0.1.0"
 signal = "quenty/signal@^2.0.0-canary"
 maid = "quenty/maid@^2.0.1-canary"
 coldfusion = "nightcycle/cold-fusion@1.0.1"
-draw = "nightcycle/draw@^1.0.0"
 math = "nightcycle/math@^2.1.0"
 testez = "roblox/testez@0.4.1"
-isotope = "nightcycle/isotope@1.0.0"

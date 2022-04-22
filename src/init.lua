@@ -8,30 +8,6 @@ local fusion = require(packages:WaitForChild("coldfusion"))
 
 local Reactor = {}
 
---[[
-	@startuml
-	!theme crt-amber
-	class Reactor {
-		- _Analytics: Analytics
-		- Version: table
-		- Logging: table
-		+ Players: Players
-		+ Enum: Enum
-		+ Scene: Scene
-		+ new(class: string): Object
-		+ type(any): boolean
-		+ Midas(): Midas
-		+ GetService(name: string): Service
-		+ IsServer(): boolean
-		+ IsClient(): boolean
-		+ IsStudio(): boolean
-		+ Log(text: string, severity: EnumItem | nil, ...)
-		+ Import(path: string): Module | Instance
-	}
-	!include Services/init.lua
-	@enduml
-]]--
-
 Reactor.__index = function(s, k)
 	local v = rawget(s, k)
 	if v then
@@ -47,13 +23,13 @@ Reactor.__newindex = function(s, k, v)
 	error("Reactor is locked, because uh, radiation or something")
 end
 
-local getService = require(script:WaitForChild("Services"))
+local ServierHandler = require(script:WaitForChild("Services"))
 function Reactor:GetService(serviceName)
-	return getService(serviceName)
+	return ServierHandler.getService(serviceName)
 end
-Reactor.Players = getService("Players")
+Reactor.Players = ServierHandler.getService("Players")
 Reactor.Scene = fusion.Value(nil)
-Reactor.Enum = getService("Enum")
+Reactor.Enum = ServierHandler.getService("Enum")
 Reactor.Enum.Log = {"Debug", "Info", "Warn", "Error", "Fatal"}
 
 local constructorService = require(script:WaitForChild("Constructors"))

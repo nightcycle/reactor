@@ -14,10 +14,6 @@ local Constructors = {
 	state = fusion.State,
 }
 
-for i, mod in ipairs(script:GetChildren()) do
-	Constructors[string.lower(mod.Name)] = mod
-end
-
 local Handler = {}
 
 function Handler.get(componentName: string)
@@ -37,14 +33,12 @@ function Handler.set(componentName: string, func)
 	Constructors[string.lower(componentName)] = func
 end
 
--- Handler.set("action", require(packages:WaitForChild("action")))
--- Handler.set("appearance", require(packages:WaitForChild("appearance")))
--- Handler.set("camera", require(packages:WaitForChild("camera")))
--- Handler.set("character", require(packages:WaitForChild("character")))
--- Handler.set("finitestatemachine", require(packages:WaitForChild("finitestatemachine")))
--- Handler.set("isotope", require(packages:WaitForChild("isotope")))
--- Handler.set("movement", require(packages:WaitForChild("movement")))
--- Handler.set("player", require(packages:WaitForChild("player")))
--- Handler.set("ray", require(packages:WaitForChild("ray")))
+Handler.set("isotope", require(packages:WaitForChild("isotope")))
+Handler.set("checkbox", require(packages:WaitForChild("checkbox")))
+Handler.set("iconlabel", require(packages:WaitForChild("iconlabel")))
+Handler.set("player", require(packages:WaitForChild("player")))
+Handler.set("radiobutton", require(packages:WaitForChild("radiobutton")))
+Handler.set("switch", require(packages:WaitForChild("switch")))
+Handler.set("textlabel", require(packages:WaitForChild("textlabel")))
 
 return Handler

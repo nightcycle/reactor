@@ -6,11 +6,11 @@ local Services = {}
 
 local Handler = {}
 
-function Handler.SetService(serviceName: string, module)
+function Handler.setService(serviceName: string, module)
 	Services[serviceName] = module
 end
 
-function Handler.GetService(serviceName: string)
+function Handler.getService(serviceName: string)
 	if Services[string.lower(serviceName)] then
 		return require(Services[string.lower(serviceName)])
 	elseif packages:FindFirstChild(string.lower(serviceName)) then
@@ -27,19 +27,20 @@ function Handler.GetService(serviceName: string)
 	end
 end
 
-Handler.SetService("draw", packages:WaitForChild("draw"))
-Handler.SetService("enum", packages:WaitForChild("enum"))
-Handler.SetService("fire", packages:WaitForChild("fire"))
-Handler.SetService("format", packages:WaitForChild("format"))
-Handler.SetService("string", packages:WaitForChild("string"))
-Handler.SetService("texture", packages:WaitForChild("texture"))
-Handler.SetService("query", packages:WaitForChild("query"))
-Handler.SetService("timesync", packages:WaitForChild("timesync"))
-Handler.SetService("voxel", packages:WaitForChild("voxel"))
-Handler.SetService("signal", packages:WaitForChild("signal"))
-Handler.SetService("maid", packages:WaitForChild("maid"))
-Handler.SetService("coldfusion", packages:WaitForChild("coldfusion"))
-Handler.SetService("math", packages:WaitForChild("math"))
-Handler.SetService("testez", packages:WaitForChild("testez"))
+Handler.setService("draw", packages:WaitForChild("draw"))
+Handler.setService("enum", packages:WaitForChild("enum"))
+Handler.setService("fire", packages:WaitForChild("fire"))
+Handler.setService("format", packages:WaitForChild("format"))
+Handler.setService("string", packages:WaitForChild("string"))
+Handler.setService("texture", packages:WaitForChild("texture"))
+Handler.setService("query", packages:WaitForChild("query"))
+Handler.setService("timesync", packages:WaitForChild("timesync"))
+Handler.setService("voxel", packages:WaitForChild("voxel"))
+Handler.setService("signal", packages:WaitForChild("signal"))
+Handler.setService("maid", packages:WaitForChild("maid"))
+Handler.setService("coldfusion", packages:WaitForChild("coldfusion"))
+Handler.setService("math", packages:WaitForChild("math"))
+Handler.setService("testez", packages:WaitForChild("testez"))
+Handler.setService("import", packages:WaitForChild("import"))
 
 return Handler

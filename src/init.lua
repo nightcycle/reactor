@@ -110,7 +110,7 @@ function Reactor:Log(text, severity, ...)
 	end
 end
 
-local import = getService("Import")
+local import = ServierHandler.getService("Import")
 
 import.setConfig({
 	useWaitForChild = true,
@@ -127,6 +127,32 @@ import.setAliases({
 function Reactor:Import(path)
 	return import(path)
 end
+
+-- ported OOP API
+function Reactor:BindToClose(...) return game:BindToClose(...) end
+function Reactor:IsLoaded(...) return game:IsLoaded(...) end
+function Reactor:FindService(...) return game:FindService(...) end
+function Reactor:ClearAllChildren(...) return game:ClearAllChildren(...) end
+function Reactor:Clone(...) return game:Clone(...) end
+function Reactor:Destroy(...) return game:Destroy(...) end
+function Reactor:FindFirstAncestor(...) return game:FindFirstAncestor(...) end
+function Reactor:FindFirstAncestorOfClass(...) return game:FindFirstAncestorOfClass(...) end
+function Reactor:FindFirstChild(...) return game:FindFirstChild(...) end
+function Reactor:FindFirstChildOfClass(...) return game:FindFirstChildOfClass(...) end
+function Reactor:FindFirstChildWhichIsA(...) return game:FindFirstChildWhichIsA(...) end
+function Reactor:FindFirstDescendant(...) return game:FindFirstDescendant(...) end
+function Reactor:GetActor(...) return game:GetActor(...) end
+function Reactor:GetAttribute(...) return game:GetAttribute(...) end
+function Reactor:GetAttributeChangedSignal(...) return game:GetAttributeChangedSignal(...) end
+function Reactor:GetAttributes(...) return game:GetAttributes(...) end
+function Reactor:GetChildren(...) return game:GetChildren(...) end
+function Reactor:GetDescendants(...) return game:GetDescendants(...) end
+function Reactor:GetFullName(...) return game:GetFullName(...) end
+function Reactor:GetPropertyChangedSignal(...) return game:GetPropertyChangedSignal(...) end
+function Reactor:IsA(...) return game:IsA(...) end
+function Reactor:IsAncestorOf(...) return game:IsAncestorOf(...) end
+function Reactor:IsDescendantOf(...) return game:IsDescendantOf(...) end
+function Reactor:SetAttribute(...) return game:SetAttribute(...) end
 
 return function(config)
 	-- local analytics = getService("Analytics")

@@ -32,42 +32,42 @@ Reactor.Scene = fusion.Value(nil)
 Reactor.Enum = ServierHandler.getService("Enum")
 Reactor.Enum.Log = {"Debug", "Info", "Warn", "Error", "Fatal"}
 
-local constructorService = require(script:WaitForChild("Constructors"))
+-- local constructorService = require(script:WaitForChild("Constructors"))
 
-local registry = {}
+-- local registry = {}
 
-function Reactor.new(componentName)
-	local newComponent = constructorService.get(componentName)
+-- function Reactor.new(componentName)
+-- 	local newComponent = constructorService.get(componentName)
 
-	--register instance to registry
-	if newComponent then
-		if newComponent.Instance and newComponent.Destroying and newComponent._Maid then
-			registry[newComponent] = fusion.Value()
-			local compState = fusion.Computed(newComponent.Instance, function(inst)
-				if not inst then return end
-				registry[inst] = registry
-				newComponent._Maid._reactorObjectRegState = function()
-					registry[inst] = nil
-				end
-			end)
-			local destroySig
-			destroySig = newComponent.Destroying:Connect(function()
-				destroySig:Disconnect()
-				compState:Destroy()
-			end)
-		end
-	end
+-- 	--register instance to registry
+-- 	if newComponent then
+-- 		if newComponent.Instance and newComponent.Destroying and newComponent._Maid then
+-- 			registry[newComponent] = fusion.Value()
+-- 			local compState = fusion.Computed(newComponent.Instance, function(inst)
+-- 				if not inst then return end
+-- 				registry[inst] = registry
+-- 				newComponent._Maid._reactorObjectRegState = function()
+-- 					registry[inst] = nil
+-- 				end
+-- 			end)
+-- 			local destroySig
+-- 			destroySig = newComponent.Destroying:Connect(function()
+-- 				destroySig:Disconnect()
+-- 				compState:Destroy()
+-- 			end)
+-- 		end
+-- 	end
 
-	return newComponent
-end
+-- 	return newComponent
+-- end
 
-function Reactor.get(inst)
-	return registry[inst]
-end
+-- function Reactor.get(inst)
+-- 	return registry[inst]
+-- end
 
-function Reactor.register(key, func)
-	constructorService.set(key, func)
-end
+-- function Reactor.register(key, func)
+-- 	constructorService.set(key, func)
+-- end
 
 function Reactor.type(obj)
 	return tostring(obj.Type or obj.__type or obj.ClassName or obj.Class or typeof(obj) or type(obj))
@@ -118,9 +118,9 @@ import.setConfig({
 })
 import.setAliases({
 	server = if RunService:IsServer() then ServerScriptService:WaitForChild("Server") else nil,
-	client = if RunService:IsClient() then Players.LocalPlayer:WaitForChild("PlayerScripts"):WaitForChild("Client") else nil,
+	client = if RunService:IsClient() and RunService:IsRunning() then Players.LocalPlayer:WaitForChild("PlayerScripts"):WaitForChild("Client") else nil,
 	shared = ReplicatedStorage:WaitForChild("Shared"),
-	lib = ReplicatedStorage:WaitForChild("Library"),
+	library = ReplicatedStorage:WaitForChild("Library"),
 	reactor = script,
 })
 

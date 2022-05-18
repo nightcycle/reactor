@@ -23,13 +23,13 @@ Reactor.__newindex = function(s, k, v)
 	error("Reactor is locked, because uh, radiation or something")
 end
 
-local ServierHandler = require(script:WaitForChild("Services"))
+local ServiceHandler = require(script:WaitForChild("Services"))
 function Reactor:GetService(serviceName)
-	return ServierHandler.getService(serviceName)
+	return ServiceHandler.getService(serviceName)
 end
-Reactor.Players = ServierHandler.getService("Players")
+Reactor.Players = ServiceHandler.getService("Players")
 Reactor.Scene = fusion.Value(nil)
-Reactor.Enum = ServierHandler.getService("Enum")
+Reactor.Enum = ServiceHandler.getService("Enum")
 Reactor.Enum.Log = {"Debug", "Info", "Warn", "Error", "Fatal"}
 
 -- local constructorService = require(script:WaitForChild("Constructors"))
@@ -110,7 +110,7 @@ function Reactor:Log(text, severity, ...)
 	end
 end
 
-local import = ServierHandler.getService("Import")
+local import = ServiceHandler.getService("Import")
 
 import.setConfig({
 	useWaitForChild = true,
@@ -153,6 +153,10 @@ function Reactor:IsA(...) return game:IsA(...) end
 function Reactor:IsAncestorOf(...) return game:IsAncestorOf(...) end
 function Reactor:IsDescendantOf(...) return game:IsDescendantOf(...) end
 function Reactor:SetAttribute(...) return game:SetAttribute(...) end
+
+function Reactor:SetService(serviceName: string, module: ModuleScript)
+	ServiceHandler.setService(string.lower(serviceName), module)
+end
 
 return function(config)
 	-- local analytics = getService("Analytics")

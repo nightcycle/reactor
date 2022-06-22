@@ -1,6 +1,7 @@
 local ServerScriptService = game:GetService("ServerScriptService")
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local ReplicatedFirst = game:GetService("ReplicatedFirst")
 local RunService = game:GetService("RunService")
 
 local packages = script.Parent
@@ -27,54 +28,16 @@ local ServiceHandler = require(script:WaitForChild("Services"))
 function Reactor:GetService(serviceName)
 	return ServiceHandler.getService(serviceName)
 end
-Reactor.Players = ServiceHandler.getService("Players")
 Reactor.Scene = fusion.Value(nil)
 Reactor.Enum = ServiceHandler.getService("Enum")
 Reactor.Enum.Log = {"Debug", "Info", "Warn", "Error", "Fatal"}
-
--- local constructorService = require(script:WaitForChild("Constructors"))
-
--- local registry = {}
-
--- function Reactor.new(componentName)
--- 	local newComponent = constructorService.get(componentName)
-
--- 	--register instance to registry
--- 	if newComponent then
--- 		if newComponent.Instance and newComponent.Destroying and newComponent._Maid then
--- 			registry[newComponent] = fusion.Value()
--- 			local compState = fusion.Computed(newComponent.Instance, function(inst)
--- 				if not inst then return end
--- 				registry[inst] = registry
--- 				newComponent._Maid._reactorObjectRegState = function()
--- 					registry[inst] = nil
--- 				end
--- 			end)
--- 			local destroySig
--- 			destroySig = newComponent.Destroying:Connect(function()
--- 				destroySig:Disconnect()
--- 				compState:Destroy()
--- 			end)
--- 		end
--- 	end
-
--- 	return newComponent
--- end
-
--- function Reactor.get(inst)
--- 	return registry[inst]
--- end
-
--- function Reactor.register(key, func)
--- 	constructorService.set(key, func)
--- end
 
 function Reactor.type(obj)
 	return tostring(obj.Type or obj.__type or obj.ClassName or obj.Class or typeof(obj) or type(obj))
 end
 
 function Reactor:Midas(...)
-
+	return self._Analytics:Midas(...)
 end
 
 function Reactor:IsServer()
@@ -92,7 +55,7 @@ end
 function Reactor:Log(text, severity, ...)
 	severity = severity or self.Enum.Log.Info
 	local scriptName = debug.info(2, "s")
-	if self._Logging.Filters[scriptName] then return end
+	if self.Logging.Filters[scriptName] then return end
 	local scriptTags = string.split(string.gsub(scriptName, "%p", "_"), "_")
 	-- print(scriptTags)
 	local finalTag = scriptTags[#scriptTags]
@@ -118,9 +81,16 @@ import.setConfig({
 })
 import.setAliases({
 	server = if RunService:IsServer() then ServerScriptService:WaitForChild("Server") else nil,
-	client = if RunService:IsClient() and RunService:IsRunning() then Players.LocalPlayer:WaitForChild("PlayerScripts"):WaitForChild("Client") else nil,
+	client = if RunService:IsClient() then
+		if RunService:IsRunning() then
+			Players.LocalPlayer:WaitForChild("PlayerScripts"):WaitForChild("Client")
+		else
+			game:WaitForChild("StarterPlayer"):WaitForChild("StarterPlayerScripts"):WaitForChild("Client")
+	else nil,
 	shared = ReplicatedStorage:WaitForChild("Shared"),
 	library = ReplicatedStorage:WaitForChild("Library"),
+	first = if RunService:IsClient() then ReplicatedFirst else nil,
+	workspace = workspace,
 	reactor = script,
 })
 
@@ -154,28 +124,69 @@ function Reactor:IsAncestorOf(...) return game:IsAncestorOf(...) end
 function Reactor:IsDescendantOf(...) return game:IsDescendantOf(...) end
 function Reactor:SetAttribute(...) return game:SetAttribute(...) end
 
+function Reactor:GetRemoteEvent(eventName)
+	local remoteEvents = script:WaitForChild("RemoteEvents")
+	if RunService:IsServer() then
+		if remoteEvents:FindFirstChild(eventName) then
+			return remoteEvents:FindFirstChild(eventName)
+		else
+			local remoteEvent = Instance.new("RemoteEvent", remoteEvents)
+			remoteEvent.Name = eventName
+			return remoteEvent
+		end
+	else
+		return remoteEvents:WaitForChild(eventName)	
+	end
+end
+
+function Reactor:GetRemoteFunction(functionName)
+	local remoteFunctions = script:WaitForChild("RemoteFunctions")
+	if RunService:IsServer() then
+		if remoteFunctions:FindFirstChild(functionName) then
+			return remoteFunctions:FindFirstChild(functionName)
+		else
+			local remoteFunction = Instance.new("RemoteFunction", remoteFunctions)
+			remoteFunction.Name = functionName
+			return remoteFunction
+		end
+	else
+		return remoteFunctions:WaitForChild(functionName)	
+	end
+end
+
 function Reactor:SetService(serviceName: string, module: ModuleScript)
 	ServiceHandler.setService(string.lower(serviceName), module)
 end
 
 return function(config)
-	-- local analytics = getService("Analytics")
-	-- if RunService:IsServer() then
-	-- 	analytics.init(config.TitleId, config.DevSecretKey)
-	-- end
-	local self = setmetatable({
-		-- _Analytics = getService("Analytics"),
-		_Version = config.Version,
-		_Logging = config.Logging or {
-			Levels = {
-				Debug = RunService:IsStudio(),
-				Info = RunService:IsStudio(),
-				Warning = true,
-				Error = true,
-				Fatal = true,
-			},
-			Filters = {}
-		}
-	}, Reactor)
+	-- handle analytics
+	local analytics = ServiceHandler.getService("Analytics")
+	if RunService:IsServer() then
+		analytics.init(config.TitleId or "", config.DevSecretKey or "")
+		config.TitleId = nil
+		config.DevSecretKey = nil
+	end
+
+	-- set up self
+	local self = {}
+	for k, v in pairs(config) do
+		self[k] = v
+	end
+	self.Version = self.Version or "Unspecified"
+	self.Logging = self.Logging or {
+		Levels = {
+			Debug = RunService:IsStudio(),
+			Info = RunService:IsStudio(),
+			Warning = true,
+			Error = true,
+			Fatal = true,
+		},
+		Filters = {}
+	}
+
+	self._Analytics = analytics
+
+	setmetatable(self, Reactor)
+
 	return self
 end

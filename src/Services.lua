@@ -1,4 +1,3 @@
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local reactor = script.Parent
 local packages = reactor.Parent
 

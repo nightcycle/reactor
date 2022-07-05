@@ -1,11 +1,13 @@
 local RunService = game:GetService("RunService")
 
-local Game: DataModel = require(script:WaitForChild("Game"))
-
+local Game = require(script:WaitForChild("Game"))
 local Util = require(script:WaitForChild("Util"))
 local Service = require(script:WaitForChild("Service"))
 
 local Reactor = {}
+setmetatable(Util, Game)
+setmetatable(Service, Util)
+setmetatable(Reactor, Service)
 
 function Reactor:Destroy(): nil
 	Service.Destroy(self)
@@ -80,6 +82,8 @@ return function(config)
 	local self = {
 		_Config = config,
 		_Importer = nil,
+		_Services = {},
+		_ServiceCaches = {},
 		Instance = {}
 	}
 	setmetatable(self, Reactor)
@@ -112,7 +116,7 @@ return function(config)
 		first = if RunService:IsClient() then game.ReplicatedFirst else nil,
 		workspace = workspace,
 	})
-	rawset("_Importer", Importer)
+	rawset(self, "_Importer", Importer)
 	if self.Instance then
 		self.Instance.new = function(...)
 			return self:BuildService(...)

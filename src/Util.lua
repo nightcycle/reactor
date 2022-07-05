@@ -1,7 +1,14 @@
 local RunService: RunService = game:GetService("RunService")
 
+if RunService:IsServer() then
+	local RemFuncFolder: Folder = if script:FindFirstChild("RemoteFunctions") then script:FindFirstChild("RemoteFunctions") else Instance.new("Folder", script)
+	RemFuncFolder.Name = "RemoteFunctions"
+
+	local RemEvFolder: Folder = if script:FindFirstChild("RemoteEvents") then script:FindFirstChild("RemoteEvents") else Instance.new("Folder", script)
+	RemEvFolder.Name = "RemoteEvents"
+end
+
 local Util = {}
-Util.__index = Util
 
 export type Typeable = {
 	ClassName: string | nil,

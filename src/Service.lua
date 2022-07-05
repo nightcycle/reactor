@@ -2,8 +2,6 @@ local reactor = script.Parent
 local packages = reactor.Parent
 
 local Handler = {}
-Handler.__index = Handler
-
 
 function Handler:Destroy()
 	for k, v in pairs(self._ServiceCaches) do
@@ -19,18 +17,24 @@ end
 
 function Handler:GetService(name: string)
 	local service
+	local origName = name
 	name = string.lower(name)
 	name = string.gsub(name, "service", "")
+	origName = string.gsub(origName, "Service", "")
 	if self._ServiceCaches[name] ~= nil then
 		service = self._ServiceCaches[name]
+	elseif self._ServiceCaches[name.."service"] ~= nil then
+		service = self._ServiceCaches[name.."service"]
 	elseif self._Services[name] ~= nil then
 		service = require(self._Services[name])
+	elseif self._Services[name.."service"] ~= nil then
+		service = require(self._Services[name.."service"])
 	else
 		pcall(function()
-			service = game:GetService(name.."Service")
+			service = game:GetService(origName.."Service")
 		end)
 		if not service then
-			service = game:GetService(name)
+			service = game:GetService(origName)
 		end
 	end
 	self:CacheService(name, service)

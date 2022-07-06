@@ -6,6 +6,12 @@ if RunService:IsServer() then
 
 	local RemEvFolder: Folder = if script:FindFirstChild("RemoteEvents") then script:FindFirstChild("RemoteEvents") else Instance.new("Folder", script)
 	RemEvFolder.Name = "RemoteEvents"
+
+	local BindFuncFolder: Folder = if script:FindFirstChild("BindableFunctions") then script:FindFirstChild("BindableFunctions") else Instance.new("Folder", script)
+	BindFuncFolder.Name = "BindableFunctions"
+
+	local BindEvFolder: Folder = if script:FindFirstChild("BindableEvents") then script:FindFirstChild("BindableEvents") else Instance.new("Folder", script)
+	BindEvFolder.Name = "BindableEvents"
 end
 
 local Util = {}
@@ -119,6 +125,37 @@ function Util:GetRemoteFunction(functionName)
 		end
 	else
 		return remoteFunctions:WaitForChild(functionName)
+	end
+end
+
+
+function Util:GetBindableEvent(eventName)
+	local bindableEvents = script:WaitForChild("BindableEvents")
+	if RunService:IsServer() then
+		if bindableEvents:FindFirstChild(eventName) then
+			return bindableEvents:FindFirstChild(eventName)
+		else
+			local bindableEvent = Instance.new("BindableEvent", bindableEvents)
+			bindableEvent.Name = eventName
+			return bindableEvent
+		end
+	else
+		return bindableEvents:WaitForChild(eventName)
+	end
+end
+
+function Util:GetBindableFunction(functionName)
+	local bindableFunctions = script:WaitForChild("BindableFunctions")
+	if RunService:IsServer() then
+		if bindableFunctions:FindFirstChild(functionName) then
+			return bindableFunctions:FindFirstChild(functionName)
+		else
+			local bindableFunction = Instance.new("BindableFunction", bindableFunctions)
+			bindableFunction.Name = functionName
+			return bindableFunction
+		end
+	else
+		return bindableFunctions:WaitForChild(functionName)
 	end
 end
 

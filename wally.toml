@@ -1,29 +1,11 @@
 [package]
 name = "nightcycle/reactor"
-description = "A light cold-fusion powered engine / framework for Nightcycle projects. Think of it as a 'game' instance wrapper."
-version = "0.5.12"
+description = "A light cold-fusion powered engine / framework for Nightcycle projects."
+version = "0.6.0"
 authors = ["Nightcycle <coyer@nightcycle.us>"]
 realm = "shared"
 registry = "https://github.com/upliftgames/wally-index"
 exclude = ["Packages", ".vscode"]
 
 [dependencies]
-analytics = "nightcycle/midas@^0.2.2"
-isotope = "nightcycle/isotope@^1.2.23"
-draw = "nightcycle/draw@^1.0.0"
-enum = "nightcycle/enum@^0.1.4"
-format = "nightcycle/format@^0.1.2"
-string = "nightcycle/string@^0.1.0"
-texture = "nightcycle/texture@^0.1.4"
-query = "nightcycle/query@^0.1.1"
-timesync = "nightcycle/timesync@^0.1.0"
-math = "nightcycle/math@^3.4.0"
-effect = "nightcycle/effect@^1.0.0"
-synthetic = "nightcycle/synthetic@^3.3.16"
-valuesequence = "nightcycle/valuesequence@^1.1.0"
-fetchu = "nightcycle/fetchu@^1.0.1"
-import = "vocksel/import@^2.1.0"
-signal = "quenty/signal@^2.0.0-canary"
-maid = "quenty/maid@^2.0.1-canary"
-graph = "nightcycle/boat-graph@^1.0.2"
-coldfusion = "nightcycle/cold-fusion@^2.0.23"
+Maid = "quenty/maid@^2.0.1-canary"
